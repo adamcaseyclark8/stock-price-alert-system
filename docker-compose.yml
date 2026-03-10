@@ -46,6 +46,26 @@ services:
       timeout: 10s
       retries: 10
 
+  kafka-init:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: kafka-init
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ['/bin/bash', '-c']
+    command: |
+      "
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists \
+        --topic stock.prices --partitions 3 --replication-factor 1
+
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists \
+        --topic stock.alerts --partitions 3 --replication-factor 1
+
+      echo 'Topics ready:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+    restart: 'no'
+
   kafka-ui:
     image: redpandadata/console:v2.4.3
     container_name: kafka-ui
