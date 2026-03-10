@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
+    "dev:mock-alpaca": "ts-node src/mock-alpaca-ws.ts",
     "dev:consumer": "ts-node src/ws-consumer.ts",
     "dev:engine": "ts-node src/alert-engine.ts",
     "dev:notifier": "ts-node src/notifier.ts",
